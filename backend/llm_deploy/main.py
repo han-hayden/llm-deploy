@@ -43,6 +43,13 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    # Register routers
+    from llm_deploy.api.tasks import router as tasks_router
+    from llm_deploy.api.models import router as models_router
+
+    app.include_router(tasks_router)
+    app.include_router(models_router)
+
     @app.get("/api/health")
     async def health_check():
         return {"status": "ok", "version": "0.1.0"}
