@@ -1,0 +1,22 @@
+FROM {{ base_image }}
+
+LABEL maintainer="llm-deploy"
+LABEL model="{{ model_name }}"
+
+# Install additional dependencies
+RUN pip install --no-cache-dir transformers>=4.40.0 accelerate
+{% for pkg in extra_pip_packages %}
+RUN pip install --no-cache-dir {{ pkg }}
+{% endfor %}
+
+{% if api_wrapper %}
+# Copy OpenAI-compatible API wrapper
+COPY api_wrapper.py /app/api_wrapper.py
+RUN pip install --no-cache-dir fastapi uvicorn
+{% endif %}
+
+WORKDIR /app
+
+EXPOSE 8000
+
+CMD ["bash", "-c", "{{ startup_command | replace('\n', ' ') }}"]
