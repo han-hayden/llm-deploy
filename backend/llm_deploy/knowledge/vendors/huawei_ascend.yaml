@@ -1,0 +1,105 @@
+# Huawei Ascend NPU Knowledge Base
+vendor: Huawei_Ascend
+vendor_cn: 华为昇腾
+chips:
+  - model: "910B3"
+    display_name: "昇腾 910B3 64G"
+    memory_gb: 64
+    memory_type: "HBM2e"
+    compute_tflops_fp16: 280
+    compute_tflops_bf16: 280
+    interconnect: "HCCS 56GB/s"
+    bf16_support: true
+    fp8_support: false
+    driver_versions:
+      - version: "24.1.RC2"
+        cann: "8.0.RC2"
+        status: "recommended"
+    compatible_engines:
+      - engine: "mindie"
+        versions: ["1.0"]
+        min_driver: "24.1.RC2"
+        min_sdk: "CANN 8.0.RC2"
+        base_images:
+          - "ascendhub.huawei.com/mindie:1.0-cann8.0"
+      - engine: "vllm-ascend"
+        versions: ["0.6.0"]
+        min_driver: "24.1.RC2"
+        min_sdk: "CANN 8.0.RC2"
+        base_images:
+          - "ascendhub.huawei.com/pytorch:2.1.0-cann8.0"
+    container_config:
+      runtime: "ascend"
+      device_args: "--device /dev/davinci0 --device /dev/davinci_manager --device /dev/hisi_hdc -v /usr/local/dcmi:/usr/local/dcmi -v /usr/local/Ascend/driver:/usr/local/Ascend/driver"
+      env_vars:
+        ASCEND_VISIBLE_DEVICES: "all"
+      k8s_resource: "huawei.com/Ascend910"
+      device_path_pattern: "/dev/davinci{}"
+      extra_k8s_volumes:
+        - name: "ascend-driver"
+          hostPath: "/usr/local/Ascend/driver"
+          mountPath: "/usr/local/Ascend/driver"
+
+  - model: "910B4"
+    display_name: "昇腾 910B4 64G"
+    memory_gb: 64
+    memory_type: "HBM2e"
+    compute_tflops_fp16: 320
+    compute_tflops_bf16: 320
+    interconnect: "HCCS 56GB/s"
+    bf16_support: true
+    fp8_support: false
+    driver_versions:
+      - version: "24.1.RC2"
+        cann: "8.0.RC2"
+        status: "minimum"
+      - version: "24.1.RC3"
+        cann: "8.0.RC3"
+        status: "recommended"
+    compatible_engines:
+      - engine: "mindie"
+        versions: ["1.0"]
+        min_driver: "24.1.RC2"
+        min_sdk: "CANN 8.0.RC2"
+        base_images:
+          - "ascendhub.huawei.com/mindie:1.0-cann8.0"
+      - engine: "vllm-ascend"
+        versions: ["0.6.0"]
+        min_driver: "24.1.RC2"
+        min_sdk: "CANN 8.0.RC2"
+        base_images:
+          - "ascendhub.huawei.com/pytorch:2.1.0-cann8.0"
+    container_config:
+      runtime: "ascend"
+      device_args: "--device /dev/davinci0 --device /dev/davinci_manager --device /dev/hisi_hdc -v /usr/local/dcmi:/usr/local/dcmi -v /usr/local/Ascend/driver:/usr/local/Ascend/driver"
+      env_vars:
+        ASCEND_VISIBLE_DEVICES: "all"
+      k8s_resource: "huawei.com/Ascend910"
+      device_path_pattern: "/dev/davinci{}"
+
+  - model: "910C"
+    display_name: "昇腾 910C 128G"
+    memory_gb: 128
+    memory_type: "HBM2e"
+    compute_tflops_fp16: 400
+    compute_tflops_bf16: 400
+    interconnect: "HCCS 112GB/s"
+    bf16_support: true
+    fp8_support: false
+    driver_versions:
+      - version: "24.1.RC3"
+        cann: "8.0.RC3"
+        status: "recommended"
+    compatible_engines:
+      - engine: "mindie"
+        versions: ["2.0"]
+        min_driver: "24.1.RC3"
+        min_sdk: "CANN 8.0.RC3"
+        base_images:
+          - "ascendhub.huawei.com/mindie:2.0-cann8.0"
+    container_config:
+      runtime: "ascend"
+      device_args: "--device /dev/davinci0 --device /dev/davinci_manager --device /dev/hisi_hdc -v /usr/local/dcmi:/usr/local/dcmi -v /usr/local/Ascend/driver:/usr/local/Ascend/driver"
+      env_vars:
+        ASCEND_VISIBLE_DEVICES: "all"
+      k8s_resource: "huawei.com/Ascend910"

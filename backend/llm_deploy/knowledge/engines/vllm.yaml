@@ -1,0 +1,96 @@
+# vLLM Inference Engine Knowledge Base
+engine: vllm
+display_name: vLLM
+description: "High-throughput and memory-efficient inference engine for LLMs"
+openai_compatible: true
+
+versions:
+  - version: "0.6.0"
+    release_date: "2024-09"
+    supported_hardware:
+      - vendor: NVIDIA
+        min_compute_capability: "7.0"
+      - vendor: Huawei_Ascend
+        variant: "vllm-ascend"
+      - vendor: Hygon_DCU
+        variant: "vllm-dcu"
+      - vendor: MetaX
+        variant: "maca-vllm"
+      - vendor: Iluvatar
+        variant: "ix-vllm"
+
+parameters:
+  - name: "model"
+    type: "string"
+    required: true
+    description: "Path to the model weights"
+    cli_flag: "--model"
+  - name: "dtype"
+    type: "string"
+    required: false
+    default: "auto"
+    choices: ["auto", "float16", "bfloat16", "float32"]
+    description: "Data type for model weights"
+    cli_flag: "--dtype"
+  - name: "tensor-parallel-size"
+    type: "integer"
+    required: false
+    default: 1
+    description: "Number of tensor parallel replicas"
+    cli_flag: "--tensor-parallel-size"
+  - name: "pipeline-parallel-size"
+    type: "integer"
+    required: false
+    default: 1
+    description: "Number of pipeline parallel stages"
+    cli_flag: "--pipeline-parallel-size"
+  - name: "max-model-len"
+    type: "integer"
+    required: false
+    description: "Maximum sequence length"
+    cli_flag: "--max-model-len"
+  - name: "max-num-seqs"
+    type: "integer"
+    required: false
+    default: 256
+    description: "Maximum number of sequences per iteration"
+    cli_flag: "--max-num-seqs"
+  - name: "gpu-memory-utilization"
+    type: "float"
+    required: false
+    default: 0.9
+    description: "GPU memory utilization ratio"
+    cli_flag: "--gpu-memory-utilization"
+  - name: "enforce-eager"
+    type: "boolean"
+    required: false
+    default: false
+    description: "Enforce eager mode instead of CUDA graph"
+    cli_flag: "--enforce-eager"
+  - name: "trust-remote-code"
+    type: "boolean"
+    required: false
+    default: false
+    description: "Trust remote code from model repository"
+    cli_flag: "--trust-remote-code"
+  - name: "host"
+    type: "string"
+    required: false
+    default: "0.0.0.0"
+    cli_flag: "--host"
+  - name: "port"
+    type: "integer"
+    required: false
+    default: 8000
+    cli_flag: "--port"
+
+startup_command_template: >-
+  python -m vllm.entrypoints.openai.api_server
+  --model {model}
+  --dtype {dtype}
+  --tensor-parallel-size {tp}
+  --max-model-len {max_model_len}
+  --max-num-seqs {max_num_seqs}
+  --gpu-memory-utilization {gpu_mem_util}
+  --host {host}
+  --port {port}

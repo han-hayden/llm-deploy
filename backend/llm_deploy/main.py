@@ -7,11 +7,16 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from llm_deploy.config import settings
 from llm_deploy.database import engine, Base
+from llm_deploy.knowledge.loader import kb
+from llm_deploy import models  # noqa: F401 — register all ORM models
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan: startup and shutdown events."""
+    # Load hardware knowledge base
+    kb.load()
+
     # Startup: create tables if using SQLite (dev mode)
     if "sqlite" in settings.DATABASE_URL:
         async with engine.begin() as conn:

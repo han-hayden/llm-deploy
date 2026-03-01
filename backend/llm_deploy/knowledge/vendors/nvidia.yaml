@@ -1,0 +1,124 @@
+# NVIDIA GPU Knowledge Base
+vendor: NVIDIA
+vendor_cn: NVIDIA
+chips:
+  - model: "H100_80G"
+    display_name: "H100 80G"
+    memory_gb: 80
+    memory_type: "HBM3"
+    compute_tflops_fp16: 989
+    compute_tflops_bf16: 989
+    interconnect: "NVLink 4.0 900GB/s"
+    bf16_support: true
+    fp8_support: true
+    driver_versions:
+      - version: "535.129.03"
+        cuda: "12.2"
+        status: "recommended"
+      - version: "550.54.15"
+        cuda: "12.4"
+        status: "latest"
+    compatible_engines:
+      - engine: "vllm"
+        versions: ["0.6.0", "0.5.5", "0.5.0"]
+        min_driver: "535.129.03"
+        min_cuda: "12.2"
+        base_images:
+          - "vllm/vllm-openai:v0.6.0"
+          - "vllm/vllm-openai:v0.5.5"
+      - engine: "tgi"
+        versions: ["2.3.0", "2.2.0"]
+        min_driver: "535.129.03"
+        min_cuda: "12.2"
+        base_images:
+          - "ghcr.io/huggingface/text-generation-inference:2.3.0"
+      - engine: "lmdeploy"
+        versions: ["0.6.0", "0.5.0"]
+        min_driver: "535.129.03"
+        min_cuda: "12.2"
+        base_images:
+          - "openmmlab/lmdeploy:v0.6.0"
+    container_config:
+      runtime: "nvidia"
+      device_args: "--gpus all"
+      env_vars:
+        NVIDIA_VISIBLE_DEVICES: "all"
+        NVIDIA_DRIVER_CAPABILITIES: "compute,utility"
+      k8s_resource: "nvidia.com/gpu"
+
+  - model: "A100_80G"
+    display_name: "A100 80G"
+    memory_gb: 80
+    memory_type: "HBM2e"
+    compute_tflops_fp16: 312
+    compute_tflops_bf16: 312
+    interconnect: "NVLink 3.0 600GB/s"
+    bf16_support: true
+    fp8_support: false
+    driver_versions:
+      - version: "525.105.17"
+        cuda: "12.0"
+        status: "minimum"
+      - version: "535.129.03"
+        cuda: "12.2"
+        status: "recommended"
+    compatible_engines:
+      - engine: "vllm"
+        versions: ["0.6.0", "0.5.5"]
+        min_driver: "525.105.17"
+        min_cuda: "12.0"
+        base_images:
+          - "vllm/vllm-openai:v0.6.0"
+      - engine: "tgi"
+        versions: ["2.3.0"]
+        min_driver: "525.105.17"
+        min_cuda: "12.0"
+        base_images:
+          - "ghcr.io/huggingface/text-generation-inference:2.3.0"
+      - engine: "lmdeploy"
+        versions: ["0.6.0"]
+        min_driver: "525.105.17"
+        min_cuda: "12.0"
+        base_images:
+          - "openmmlab/lmdeploy:v0.6.0"
+    container_config:
+      runtime: "nvidia"
+      device_args: "--gpus all"
+      env_vars:
+        NVIDIA_VISIBLE_DEVICES: "all"
+        NVIDIA_DRIVER_CAPABILITIES: "compute,utility"
+      k8s_resource: "nvidia.com/gpu"
+
+  - model: "A100_40G"
+    display_name: "A100 40G"
+    memory_gb: 40
+    memory_type: "HBM2e"
+    compute_tflops_fp16: 312
+    compute_tflops_bf16: 312
+    interconnect: "NVLink 3.0 600GB/s"
+    bf16_support: true
+    fp8_support: false
+    driver_versions:
+      - version: "525.105.17"
+        cuda: "12.0"
+        status: "recommended"
+    compatible_engines:
+      - engine: "vllm"
+        versions: ["0.6.0"]
+        min_driver: "525.105.17"
+        min_cuda: "12.0"
+        base_images:
+          - "vllm/vllm-openai:v0.6.0"
+      - engine: "lmdeploy"
+        versions: ["0.6.0"]
+        min_driver: "525.105.17"
+        min_cuda: "12.0"
+        base_images:
+          - "openmmlab/lmdeploy:v0.6.0"
+    container_config:
+      runtime: "nvidia"
+      device_args: "--gpus all"
+      env_vars:
+        NVIDIA_VISIBLE_DEVICES: "all"
+        NVIDIA_DRIVER_CAPABILITIES: "compute,utility"
+      k8s_resource: "nvidia.com/gpu"
