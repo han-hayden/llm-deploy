@@ -1,0 +1,44 @@
+# Sensitive
+.env
+*.sqlite
+*.db
+kubeconfig*
+**/id_rsa*
+**/*.pem
+**/*.key
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.eggs/
+build/
+dist/
+*.whl
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Project specific
+interact-pngs/
+uploads/
+models_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
