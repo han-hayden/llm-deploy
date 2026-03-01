@@ -49,12 +49,18 @@ def create_app() -> FastAPI:
     from llm_deploy.api.downloads import router as downloads_router
     from llm_deploy.api.params import router as params_router
     from llm_deploy.api.images import router as images_router
+    from llm_deploy.api.environments import router as envs_router
+    from llm_deploy.api.deployments import router as deploy_router
+    from llm_deploy.api.hardware import router as hw_router
 
     app.include_router(tasks_router)
     app.include_router(models_router)
     app.include_router(downloads_router)
     app.include_router(params_router)
     app.include_router(images_router)
+    app.include_router(envs_router)
+    app.include_router(deploy_router)
+    app.include_router(hw_router)
 
     @app.get("/api/health")
     async def health_check():

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ deployment_name }}
+  labels:
+    app: {{ deployment_name }}
+    managed-by: llm-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ deployment_name }}
+  template:
+    metadata:
+      labels:
+        app: {{ deployment_name }}
+    spec:
+      containers:
+        - name: inference
+          image: {{ image_tag }}
+          ports:
+            - containerPort: {{ port | default(8000) }}
+          resources:
+            limits:
+              {{ gpu_resource_key }}: {{ gpu_count }}
+            requests:
+              {{ gpu_resource_key }}: {{ gpu_count }}
+          {% if env_vars %}
+          env:
+            {% for key, value in env_vars.items() %}
+            - name: {{ key }}
+              value: "{{ value }}"
+            {% endfor %}
+          {% endif %}
+          volumeMounts:
+            - name: model-weights
+              mountPath: /models
+          {% for vol in extra_volumes | default([]) %}
+            - name: {{ vol.name }}
+              mountPath: {{ vol.mountPath }}
+          {% endfor %}
+      volumes:
+        - name: model-weights
+          hostPath:
+            path: {{ model_path }}
+        {% for vol in extra_volumes | default([]) %}
+        - name: {{ vol.name }}
+          hostPath:
+            path: {{ vol.hostPath }}
+        {% endfor %}
